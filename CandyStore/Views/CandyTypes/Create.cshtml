@@ -1,0 +1,60 @@
+﻿@model Candystore.Entities.CandyTypes
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>CandyTypes</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
+                    <label asp-for="ID" class="control-label"></label>
+                    <input asp-for="ID" class="form-control" />
+                    <span asp-validation-for="ID" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="CandyProduct" class="control-label"></label>
+                <input asp-for="CandyProduct" class="form-control" />
+                <span asp-validation-for="CandyProduct" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="price" class="control-label"></label>
+                <input asp-for="price" class="form-control" />
+                <span asp-validation-for="price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="imgURL" hidden class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+        <div class="row form-group">
+            <div class="col-12">
+                <label>Upload Candy Image</label>
+            </div>
+            <div class="col-12">
+                <input type="file" #file accept="image/*" id="photoUploadCandy" />
+                <button class="btn btn-custom btn-block" id="uploadPhotoCandy">Upload Image</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @*<script src="~/js/site.js"></script>*@
+}

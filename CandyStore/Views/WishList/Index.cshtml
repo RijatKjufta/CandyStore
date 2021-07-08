@@ -1,0 +1,343 @@
+﻿@model CandyStore.Models.ProductModel
+@{ ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<h1 class="bg-dark text-white text-center p-3">Wishlist</h1>
+
+<div class="custom-container">
+    <table class="table table-hover">
+        <thead>
+            <tr class="wishlist-header">
+                <th>
+                    <input type="checkbox" name="addToCart" id="checkAll" /> Select All
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhotoURL)
+                </th>
+                <th>
+                    Neshto
+                    @*@Html.DisplayNameFor(model => model.BookTitle)*@
+                </th>
+                <th>
+                    Neshto
+                    @*@Html.DisplayNameFor(model => model.AuthorName)*@
+                </th>
+                <th>
+                    Neshto
+                    @*@Html.DisplayNameFor(model => model.BookType)*@
+                </th>
+                <th>
+                    Neshto
+                    @*@Html.DisplayNameFor(model => model.Price)*@
+                </th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AllApetisaniFromWishlistByLoggedInUser)
+            {
+<tr>
+    <td>
+        <input type="checkbox" name="addToCartSelected" value="@item.ID" />
+    </td>
+    <td>
+        <img src="~/images/@item.imgURL" width="100" />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ApetisaniProduct)
+    </td>
+    @*<td>
+            @Html.DisplayFor(modelItem => item.AuthorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BookType)
+        </td>*@
+    <td>
+        @Html.DisplayFor(modelItem => item.price)
+    </td>
+    <td>
+        <button class="btn btn-block btn-danger" onclick="DeleteApetisaniItemFromWishlist(@item.ID)">
+            <i class="fas fa-trash-alt"></i> &nbsp; Delete
+        </button>
+    </td>
+</tr>
+}
+            @foreach (var item in Model.AllCandyFromWishlistByLoggedInUser)
+            {
+<tr>
+    <td>
+        <input type="checkbox" name="addToCartSelected" value="@item.ID" />
+    </td>
+    <td>
+        <img src="~/images/@item.imgURL" width="100" />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CandyProduct)
+    </td>
+    @*<td>
+            @Html.DisplayFor(modelItem => item.AuthorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BookType)
+        </td>*@
+    <td>
+        @Html.DisplayFor(modelItem => item.price)
+    </td>
+    <td>
+        <button class="btn btn-block btn-danger" onclick="DeleteCandyItemFromWishlist(@item.ID)">
+            <i class="fas fa-trash-alt"></i> &nbsp; Delete
+        </button>
+    </td>
+</tr>
+}
+            @foreach (var item in Model.AllCoffeFromWishlistByLoggedInUser)
+            {
+<tr>
+    <td>
+        <input type="checkbox" name="addToCartSelected" value="@item.ID" />
+    </td>
+    <td>
+        <img src="~/images/@item.imgURL" width="100" />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CoffeProduct)
+    </td>
+    @*<td>
+            @Html.DisplayFor(modelItem => item.AuthorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BookType)
+        </td>*@
+    <td>
+        @Html.DisplayFor(modelItem => item.Price)
+    </td>
+    <td>
+        <button class="btn btn-block btn-danger" onclick="DeleteCoffeItemFromWishlist(@item.ID)">
+            <i class="fas fa-trash-alt"></i> &nbsp; Delete
+        </button>
+    </td>
+</tr>
+}
+            <tr class="total-style">
+                <td colspan="6"></td>
+                <td>Total:</td>
+                <td> &#36; @Html.DisplayFor(modelItem => modelItem.WishlistTotalPriceOfAllTables)</td>
+            </tr>
+            <tr class="total-style">
+                <td colspan="8">
+                    <button class="btn btn-block btn-success" id="addToCartAction" disabled>
+                        <i class="fas fa-cart-plus"></i> &nbsp; Add To Cart
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="actionChooseModal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" id="modalDialogStyle" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> <span id="detailsTitle"></span> Successfully Added Product To Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Choose option to continue:</h4>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-outline-secondary btn-block" id="stayToWishlist" data-dismiss="modal">Stay to Wishlist</button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <a asp-action="GoToCart" class="btn btn-outline-success btn-block">Go to Shopping Cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+        function DeleteCandyItemFromWishlist(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Wishlist/DeleteCandy/" + id,
+                success: function (data) {
+                    //console.log(data);
+                    new Noty({
+                        type: 'alert',
+                        layout: 'bottomLeft',
+                        timeout: 1500,
+                        progressBar: true,
+                        text: 'Successfully Deleted Candy: ' + data.data.title + ' From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+
+                    setTimeout(function () {
+                        if (data) {
+                            window.location = data.url;
+                        }
+                    }, 1800);
+                },
+                error: function () {
+                    new Noty({
+                        type: 'error',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Error Delete Candy From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+                }
+            });
+        };
+        function DeleteCoffeItemFromWishlist(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Wishlist/DeleteCoffe/" + id,
+                success: function (data) {
+                    //console.log(data);
+                    new Noty({
+                        type: 'alert',
+                        layout: 'bottomLeft',
+                        timeout: 1500,
+                        progressBar: true,
+                        text: 'Successfully Deleted Coffe: ' + data.data.title + ' From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+
+                    setTimeout(function () {
+                        if (data) {
+                            window.location = data.url;
+                        }
+                    }, 1800);
+                },
+                error: function () {
+                    new Noty({
+                        type: 'error',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Error Delete Coffe From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+                }
+            });
+        };
+        function DeleteApetisaniItemFromWishlist(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Wishlist/DeleteApetisani/" + id,
+                success: function (data) {
+                    //console.log(data);
+                    new Noty({
+                        type: 'alert',
+                        layout: 'bottomLeft',
+                        timeout: 1500,
+                        progressBar: true,
+                        text: 'Successfully Deleted Apetisan: ' + data.data.title + ' From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+
+                    setTimeout(function () {
+                        if (data) {
+                            window.location = data.url;
+                        }
+                    }, 1800);
+                },
+                error: function () {
+                    new Noty({
+                        type: 'error',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Error Delete Apetisan From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+                }
+            });
+        };
+
+
+        $(function () {
+
+            $("#checkAll").click(function () {
+                $("input[name='addToCartSelected']").prop("checked", this.checked);
+                if ($("input[name='addToCartSelected']:checked").length > 0) {
+                    $("#addToCartAction").prop("disabled", false);
+                } else {
+                    $("#addToCartAction").prop("disabled", true);
+                }
+            });
+
+
+            $("input[name='addToCartSelected']").click(function () {
+                if ($("input[name='addToCartSelected']").length == $("input[name='addToCartSelected']:checked").length) {
+                    $("#checkAll").prop("checked", true);
+                } else {
+                    $("#checkAll").prop('checked', false);
+                }
+                if ($("input[name='addToCartSelected']:checked").length > 0) {
+                    $("#addToCartAction").prop("disabled", false);
+                } else {
+                    $("#addToCartAction").prop("disabled", true);
+                }
+            });
+
+
+            $("#addToCartAction").click(function () {
+                var books = [];
+
+                $.each($("input[name='addToCartSelected']:checked"), function () {
+                    books.push($(this).val());
+                });
+                // console.log(books);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Wishlist/AddToCartFromWishlist/",
+                    dataType: 'json',
+                    data: { 'bookIds': books },
+                    success: function (data) {
+                        //console.log(data);
+                        new Noty({
+                            type: 'success',
+                            layout: 'bottomLeft',
+                            timeout: 500,
+                            progressBar: true,
+                            text: 'Successfully Added Book To Cart',
+                            theme: 'sunset'
+                        }).show();
+
+                        setTimeout(function () {
+                            $('#actionChooseModal').modal('show');
+                        }, 800);
+                    },
+                    error: function () {
+                        new Noty({
+                            type: 'error',
+                            layout: 'bottomLeft',
+                            timeout: 3000,
+                            progressBar: true,
+                            text: 'Error => Unsuccessfully Added Book From Wishlist To Shopping Cart',
+                            theme: 'sunset'
+                        }).show();
+                    }
+                });
+            });
+
+
+            $("#stayToWishlist").click(function () {
+                location.reload();
+            });
+
+        });</script>
+}
+
