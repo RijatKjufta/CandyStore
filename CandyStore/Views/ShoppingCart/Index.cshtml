@@ -1,0 +1,260 @@
+﻿@model CandyStore.Models.ProductModel
+@{ ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="custom-container mt-4">
+    <h1>@*Shopping Cart (@Model.AllBooksAddedToCartByLoggedInUser.Count())*@</h1>
+    <h1>Shopping Cart</h1>
+    @*<partial name="_CounterPartial" />*@
+    <div class="row">
+        <div class="col-12 col-md-9">
+            @foreach (var candy in Model.AllCandyFromWishlistByLoggedInUser)
+            {
+<div class="card mt-3">
+    <div class="card-body row">
+        <div class="col-2 col-md-2 borderStyle">
+            <img src="~/images/@candy.imgURL" class="img-fluid" />
+        </div>
+        <div class="col-10 col-md-10">
+            <h4 class="card-title"> @Html.DisplayFor(modelItem => candy.CandyProduct)</h4>
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <h6>Description: @Html.DisplayFor(modelItem => candy.Description) </h6>
+                    @*<h6>: @Html.DisplayFor(modelItem => candy.ID)</h6>*@
+                    @*<h6>Dimensions: @Html.DisplayFor(modelItem => candy.price)</h6>*@
+                    @*<h6>Weight: @Html.DisplayFor(modelItem => candy.Weight) </h6>
+                        <h6>Shipping: @Html.DisplayFor(modelItem => candy.Shipping)</h6>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <div class="row">
+            <div class="col-9 col-md-9">
+                @*<a class="btn btn-danger" asp-action="Delete" asp-route-id="@book.Id">Delete</a>*@
+                <button class="btn btn-danger" onclick="DeleteCandyItemFromCart(@candy.ID)">
+                    <i class="fas fa-trash-alt"></i> &nbsp; Delete
+                </button>
+            </div>
+            <div class="col-3 col-md-3 text-right">
+                <h6 class="pt-1">Price: &#36; @Html.DisplayFor(modelItem => candy.price)</h6>
+            </div>
+        </div>
+
+    </div>
+</div>}
+            @foreach (var coffe in Model.AllCoffeFromWishlistByLoggedInUser)
+            {
+<div class="card mt-3">
+    <div class="card-body row">
+        <div class="col-2 col-md-2 borderStyle">
+            <img src="~/images/@coffe.imgURL" class="img-fluid" />
+        </div>
+        <div class="col-10 col-md-10">
+            <h4 class="card-title"> @Html.DisplayFor(modelItem => coffe.CoffeProduct)</h4>
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <h6>Description: @Html.DisplayFor(modelItem => coffe.Description) </h6>
+                    @*<h6>: @Html.DisplayFor(modelItem => candy.ID)</h6>*@
+                    @*<h6>Dimensions: @Html.DisplayFor(modelItem => candy.price)</h6>*@
+                    @*<h6>Weight: @Html.DisplayFor(modelItem => candy.Weight) </h6>
+                        <h6>Shipping: @Html.DisplayFor(modelItem => candy.Shipping)</h6>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <div class="row">
+            <div class="col-9 col-md-9">
+                @*<a class="btn btn-danger" asp-action="Delete" asp-route-id="@book.Id">Delete</a>*@
+                <button class="btn btn-danger" onclick="DeleteCoffeItemFromCart(@coffe.ID)">
+                    <i class="fas fa-trash-alt"></i> &nbsp; Delete
+                </button>
+            </div>
+            <div class="col-3 col-md-3 text-right">
+                <h6 class="pt-1">Price: &#36; @Html.DisplayFor(modelItem => coffe.Price)</h6>
+            </div>
+        </div>
+
+    </div>
+</div>}
+            @foreach (var apetisan in Model.AllApetisaniFromWishlistByLoggedInUser)
+            {
+<div class="card mt-3">
+    <div class="card-body row">
+        <div class="col-2 col-md-2 borderStyle">
+            <img src="~/images/@apetisan.imgURL" class="img-fluid" />
+        </div>
+        <div class="col-10 col-md-10">
+            <h4 class="card-title"> @Html.DisplayFor(modelItem => apetisan.ApetisaniProduct)</h4>
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <h6>Description: @Html.DisplayFor(modelItem => apetisan.Description) </h6>
+                    @*<h6>: @Html.DisplayFor(modelItem => candy.ID)</h6>*@
+                    @*<h6>Dimensions: @Html.DisplayFor(modelItem => candy.price)</h6>*@
+                    @*<h6>Weight: @Html.DisplayFor(modelItem => candy.Weight) </h6>
+                        <h6>Shipping: @Html.DisplayFor(modelItem => candy.Shipping)</h6>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <div class="row">
+            <div class="col-9 col-md-9">
+                @*<a class="btn btn-danger" asp-action="Delete" asp-route-id="@book.Id">Delete</a>*@
+                <button class="btn btn-danger" onclick="DeleteApetisanItemFromCart(@apetisan.ID)">
+                    <i class="fas fa-trash-alt"></i> &nbsp; Delete
+                </button>
+            </div>
+            <div class="col-3 col-md-3 text-right">
+                <h6 class="pt-1">Price: &#36; @Html.DisplayFor(modelItem => apetisan.price)</h6>
+            </div>
+        </div>
+
+    </div>
+</div>}
+        </div>
+        <div class="col-12 col-md-3">
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h4 class="card-title">Order Summary</h4>
+                    <table class="table table-borderless">
+                        <tbody>
+                            @*<tr>
+                                    <td>Subtotal</td>
+                                    <td>@Model.SubTotal</td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping</td>
+                                    <td>@Model.ShippingTotal</td>
+                                </tr>*@
+                            <tr>
+                                <td>Total</td>
+                                <td>@Model.WishlistTotalPriceOfAllTables</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a asp-action="Buy" class="btn btn-success btn-block"> <i class="far fa-credit-card"></i> &nbsp; Buy</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+        function DeleteCandyItemFromCart(id) {
+            $.ajax({
+                type: "POST",
+                url: "/ShoppingCart/DeleteCandy/" + id,
+                success: function (data) {
+                    console.log(data);
+                    new Noty({
+                        type: 'warning',
+                        layout: 'bottomLeft',
+                        timeout: 700,
+                        progressBar: true,
+                        text: 'Successfully Deleted Candy: ' + data.data.title + ' From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+
+                    setTimeout(function () {
+                        if (data) {
+                            window.location = data.url;
+                        }
+                    }, 850);
+
+                },
+                error: function () {
+                    new Noty({
+                        type: 'error',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Error Delete Candy From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+                }
+            });
+        };
+        function DeleteCoffeItemFromCart(id) {
+            $.ajax({
+                type: "POST",
+                url: "/ShoppingCart/DeleteCoffe/" + id,
+                success: function (data) {
+                    console.log(data);
+                    new Noty({
+                        type: 'warning',
+                        layout: 'bottomLeft',
+                        timeout: 700,
+                        progressBar: true,
+                        text: 'Successfully Deleted Coffe: ' + data.data.title + ' From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+
+                    setTimeout(function () {
+                        if (data) {
+                            window.location = data.url;
+                        }
+                    }, 850);
+
+                },
+                error: function () {
+                    new Noty({
+                        type: 'error',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Error Delete coffe From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+                }
+            });
+        };
+
+
+        function DeleteApetisanItemFromCart(id) {
+            $.ajax({
+                type: "POST",
+                url: "/ShoppingCart/DeleteApetisan/" + id,
+                success: function (data) {
+                    console.log(data);
+                    new Noty({
+                        type: 'warning',
+                        layout: 'bottomLeft',
+                        timeout: 700,
+                        progressBar: true,
+                        text: 'Successfully Deleted apetisan: ' + data.data.title + ' From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+
+                    setTimeout(function () {
+                        if (data) {
+                            window.location = data.url;
+                        }
+                    }, 850);
+
+                },
+                error: function () {
+                    new Noty({
+                        type: 'error',
+                        layout: 'bottomLeft',
+                        timeout: 3000,
+                        progressBar: true,
+                        text: 'Error Delete apetisan From Wishlist',
+                        theme: 'sunset'
+                    }).show();
+                }
+            });
+        };
+
+
+
+
+
+    </script>
+
+}

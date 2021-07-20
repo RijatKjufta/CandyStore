@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "noty@3.1.4",
+      "destination": "wwwroot/noty/"
+    },
+    {
+      "library": "moment.js@2.29.1",
+      "destination": "wwwroot/moment.js/"
+    },
+    {
+      "library": "font-awesome@5.15.3",
+      "destination": "wwwroot/font-awesome/"
+    }
+  ]
+}
